@@ -13,6 +13,11 @@ build/
 logs/
 *.log
 
+# Uploads
+uploads/*
+!uploads/.gitkeep
+!uploads/avatar/.gitkeep
+
 # OS
 .DS_Store
 Thumbs.db
