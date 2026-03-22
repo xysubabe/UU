@@ -1,0 +1,74 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /v1
+
+spring:
+  application:
+    name: uu-backend
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/uu_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: password
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+
+  jackson:
+    default-property-inclusion: non_null
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: assign_id
+      logic-delete-field: deleted
+      logic-not-delete-value: 1
+      logic-delete-value: 0
+
+# JWT配置
+jwt:
+  secret: uu-secret-key-very-long-random-string-at-least-256-bits
+  expiration: 604800000  # 7天（毫秒）
+
+# 微信小程序配置
+wechat:
+  miniapp:
+    appid: your-miniapp-appid
+    secret: your-miniapp-secret
+  pay:
+    appid: your-pay-appid
+    mch-id: your-mch-id
+    api-key: your-api-key
+    api-v3-key: your-api-v3-key
+    cert-path: /path/to/cert
+    notify-url: https://api.uu.com/v1/payment/callback
+
+# DevOps配置
+devops:
+  auth:
+    user: zhangsan
+    secretKey: 123456
+
+# 文件上传配置
+file:
+  upload:
+    base-path: uploads
+    avatar-path: uploads/avatar
+    max-size: 5242880  # 5MB
+
+# 日志配置
+logging:
+  level:
+    com.uu: debug
+    com.baomidou.mybatisplus: debug
