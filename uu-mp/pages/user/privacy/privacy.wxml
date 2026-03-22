@@ -1,0 +1,76 @@
+<!-- pages/user/privacy/privacy.wxml -->
+<view class="container">
+  <view class="header">
+    <text class="title">UU跑腿隐私政策</text>
+    <text class="date">生效日期：2026年1月1日</text>
+  </view>
+
+  <view class="content">
+    <view class="section">
+      <text class="section-title">引言</text>
+      <text class="text">欢迎使用UU跑腿！UU跑腿深知个人信息对您的重要性，我们将按照法律法规要求，采取相应的安全保护措施，致力于保护您的个人信息安全可控。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">一、我们收集的信息</text>
+      <text class="text">1. 账户信息：微信昵称、头像、手机号等。</text>
+      <text class="text">2. 订单信息：服务类型、地址、联系方式、订单金额等。</text>
+      <text class="text">3. 设备信息：设备型号、操作系统版本、唯一设备标识符等。</text>
+      <text class="text">4. 位置信息：您授权的位置信息，用于提供跑腿服务。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">二、我们如何使用信息</text>
+      <text class="text">1. 提供跑腿服务：处理您的订单，联系骑手完成服务。</text>
+      <text class="text">2. 账户管理：维护您的账户，验证您的身份。</text>
+      <text class="text">3. 客户服务：响应您的咨询、投诉和建议。</text>
+      <text class="text">4. 安全防护：防范欺诈、滥用等风险。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">三、信息共享</text>
+      <text class="text">1. 骑手：为完成服务，会向骑手提供必要的订单和联系信息。</text>
+      <text class="text">2. 第三方服务商：支付服务、地图服务等必要第三方。</text>
+      <text class="text">3. 法律法规：根据法律法规或政府要求提供信息。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">四、信息存储</text>
+      <text class="text">1. 您的信息将存储在中国境内的服务器上。</text>
+      <text class="text">2. 我们仅在实现本政策目的所需的期限内保留您的信息。</text>
+      <text class="text">3. 如需删除账户，请通过客服联系我们。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">五、信息安全</text>
+      <text class="text">1. 我们采用加密技术保护您的信息。</text>
+      <text class="text">2. 我们建立数据分类分级制度和管理规范。</text>
+      <text class="text">3. 我们定期对安全措施进行审计和改进。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">六、您的权利</text>
+      <text class="text">1. 访问权：您可以查询、复制您的个人信息。</text>
+      <text class="text">2. 更正权：您可以更正您的个人信息。</text>
+      <text class="text">3. 删除权：在符合法律法规要求下，您可以删除您的信息。</text>
+      <text class="text">4. 撤回同意：您可以撤回对个人信息处理的同意。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">七、未成年人保护</text>
+      <text class="text">我们非常重视对未成年人个人信息的保护。如果您是未成年人，请在监护人的指导下使用UU跑腿服务。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">八、政策更新</text>
+      <text class="text">我们可能会适时更新本隐私政策。更新后的政策将在小程序中公布。</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">九、联系我们</text>
+      <text class="text">如您对本隐私政策有任何疑问或建议，请通过以下方式联系我们：</text>
+      <text class="text">客服电话：400-XXX-XXXX</text>
+      <text class="text">邮箱：service@uu.com</text>
+    </view>
+  </view>
+</view>

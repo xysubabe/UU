@@ -78,9 +78,8 @@ Page({
    * 联系客服
    */
   contactService() {
-    wx.showToast({
-      title: '客服功能开发中',
-      icon: 'none'
+    wx.navigateTo({
+      url: '/pages/user/service/service'
     })
   },
 

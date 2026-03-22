@@ -94,9 +94,8 @@ Page({
    * 显示用户协议
    */
   showUserAgreement() {
-    wx.showToast({
-      title: '用户协议页面开发中',
-      icon: 'none'
+    wx.navigateTo({
+      url: '/pages/user/agreement/agreement'
     })
   },
 
@@ -104,9 +103,8 @@ Page({
    * 显示隐私政策
    */
   showPrivacyPolicy() {
-    wx.showToast({
-      title: '隐私政策页面开发中',
-      icon: 'none'
+    wx.navigateTo({
+      url: '/pages/user/privacy/privacy'
     })
   }
 })

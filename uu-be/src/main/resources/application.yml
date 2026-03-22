@@ -9,9 +9,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/uu?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-    username: root
-    password: 123456
+    url: jdbc:mysql://localhost:3306/uu?allowPublicKeyRetrieval=true
+    username: uudev
+    password: uudev123
     hikari:
       maximum-pool-size: 20
       minimum-idle: 5
@@ -44,7 +44,8 @@ jwt:
 # 微信小程序配置
 wechat:
   miniapp:
-    appid: your-miniapp-appid
+    enabled: false  # 设置为true启用微信功能，需要真实appid和secret
+    appid: wx5a0f8c2f0edf12bd
     secret: your-miniapp-secret
   pay:
     appid: your-pay-appid

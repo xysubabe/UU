@@ -1,7 +1,5 @@
 package com.uu.service.impl;
 
-import cn.binarywang.wx.miniapp.api.WxMaService;
-import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.uu.dto.request.WechatLoginRequest;
 import com.uu.dto.response.LoginResponse;
 import com.uu.dto.response.UserResponse;
@@ -9,45 +7,31 @@ import com.uu.entity.User;
 import com.uu.enums.ErrorCodeEnum;
 import com.uu.exception.BusinessException;
 import com.uu.mapper.UserMapper;
-import com.uu.service.UserService;
 import com.uu.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * 用户服务实现
+ * 用户服务实现（测试模式）
  */
 @Slf4j
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements com.uu.service.UserService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private WxMaService wxMaService;
 
     @Autowired
     private JwtUtil jwtUtil;
 
     @Override
     public LoginResponse wechatLogin(WechatLoginRequest request) {
-        // 调用微信API获取openid
-        WxMaJscode2SessionResult session;
-        try {
-            session = wxMaService.getUserService().getSessionInfo(request.getCode());
-        } catch (Exception e) {
-            log.error("微信登录失败", e);
-            throw new BusinessException(ErrorCodeEnum.WECHAT_LOGIN_FAILED);
-        }
+        log.warn("使用测试模式登录（WeChat SDK 已禁用）");
 
-        if (session == null || session.getOpenid() == null) {
-            throw new BusinessException(ErrorCodeEnum.WECHAT_LOGIN_FAILED);
-        }
-
-        String openid = session.getOpenid();
-        String unionid = session.getUnionid();
+        // 测试模式：使用固定的openid用于本地测试
+        String openid = "test-openid-" + System.currentTimeMillis();
+        String unionid = "test-unionid-" + System.currentTimeMillis();
 
         // 查询用户是否存在
         User user = userMapper.selectOne(
