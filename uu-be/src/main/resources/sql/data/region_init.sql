@@ -1,7 +1,7 @@
 -- 中国大陆省市区初始化数据（不含港澳台）
 -- 日期: 2026-03-22
 
-USE uu_db;
+USE uu;
 
 -- ==================== 省级行政区数据 ====================
 INSERT INTO t_region (code, name, level, parent_code) VALUES

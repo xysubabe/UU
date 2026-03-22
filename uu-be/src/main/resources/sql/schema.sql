@@ -2,9 +2,9 @@
 -- 日期: 2026-03-22
 
 -- 创建数据库（如果不存在）
-CREATE DATABASE IF NOT EXISTS uu_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS uu DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE uu_db;
+USE uu;
 
 -- ==================== 用户表 ====================
 CREATE TABLE t_user (
