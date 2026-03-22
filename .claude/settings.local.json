@@ -5,7 +5,29 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(find docs:*)",
-      "Bash(find . -type f \\\\\\(-name *.java -o -name *.gradle -o -name *.yml -o -name *.properties \\\\\\))"
+      "Bash(find . -type f \\\\\\(-name *.java -o -name *.gradle -o -name *.yml -o -name *.properties \\\\\\))",
+      "Bash(./gradlew wrapper:*)",
+      "Bash(gradle wrapper:*)",
+      "Bash(cd:*)",
+      "Bash(java:*)",
+      "Bash(echo:*)",
+      "Bash(gradle --stop)",
+      "Bash(curl -L -o gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.7.0/gradle/wrapper/gradle-wrapper.jar)",
+      "Bash(chmod:*)",
+      "Bash(./gradlew bootRun)",
+      "Bash(curl -s http://localhost:8080/v1/actuator/health)",
+      "Bash(./gradlew build:*)",
+      "Bash(mkdir -p \"C:/Users/98352/.gradle/wrapper/dists/gradle-8.7-all/abc123/bin\")",
+      "Bash(cp \"/d/迅雷下载/gradle-8.7-all.zip\" \"C:/Users/98352/.gradle/wrapper/dists/gradle-8.7-all/abc123/\")",
+      "Read(//c/Users/98352/.gradle/wrapper/dists/gradle-8.7-all/abc123/**)",
+      "Bash(unzip -q \"/d/迅雷下载/gradle-8.7-all.zip\")",
+      "Bash(pkill -f \"gradlew\")",
+      "Bash(pkill -f \"java.*gradle\")",
+      "Bash(rm -f \"C:/Users/98352/.gradle/wrapper/dists/gradle-8.7-all/aan3ydargesu18aqyqjwhr3pc/gradle-8.7-all.zip.lck\")",
+      "Bash(cp \"/d/迅雷下载/gradle-8.7-all.zip\" \"C:/Users/98352/.gradle/wrapper/dists/gradle-8.7-all/aan3ydargesu18aqyqjwhr3pc/\")",
+      "Bash(rm -rf \"C:/Users/98352/.gradle/wrapper/dists/gradle-8.7-all/aan3ydargesu18aqyqjwhr3pc\")",
+      "Bash(mkdir -p \"C:/Users/98352/.gradle/wrapper/dists/gradle-8.7-all/aan3ydargesu18aqyqjwhr3pc\")",
+      "Bash(gradle build:*)"
     ]
   }
 }
