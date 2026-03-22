@@ -3,6 +3,7 @@ package com.uu.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.uu.constants.OrderConstants;
 import com.uu.dto.request.AddressCreateRequest;
 import com.uu.dto.request.AddressUpdateRequest;
 import com.uu.dto.response.AddressResponse;
@@ -21,13 +22,17 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 /**
- * 地址服务实现
+ * 地址服务实现类
+ * <p>
+ * 提供地址的增删改查功能，包含地址数量限制（最多3个）和默认地址管理。
+ * </p>
+ *
+ * @author UU Team
+ * @since 1.0.0
  */
 @Slf4j
 @Service
 public class AddressServiceImpl implements AddressService {
-
-    private static final int MAX_ADDRESS_COUNT = 3;
 
     @Autowired
     private AddressMapper addressMapper;
@@ -85,7 +90,7 @@ public class AddressServiceImpl implements AddressService {
                         .eq(Address::getStatus, 1)
         );
 
-        if (currentCount >= MAX_ADDRESS_COUNT) {
+        if (currentCount >= OrderConstants.MAX_ADDRESS_COUNT) {
             throw new BusinessException(ErrorCodeEnum.ADDRESS_LIMIT_EXCEEDED);
         }
 

@@ -5,6 +5,7 @@ import com.uu.dto.response.ApiResponse;
 import com.uu.dto.response.IdStringResponse;
 import com.uu.dto.response.OrderDetailResponse;
 import com.uu.dto.response.OrderListResponse;
+import com.uu.dto.response.OrderStatsResponse;
 import com.uu.interceptor.LoginInterceptor;
 import com.uu.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -76,6 +77,31 @@ public class OrderController {
         Long userId = LoginInterceptor.getUserId(request);
         log.info("获取订单详情, userId={}, orderId={}", userId, orderId);
         OrderDetailResponse response = orderService.getOrderDetail(userId, orderId);
+        return ApiResponse.success(response);
+    }
+
+    /**
+     * 获取订单统计
+     */
+    @GetMapping("/stats")
+    public ApiResponse<OrderStatsResponse> getOrderStats(HttpServletRequest request) {
+        Long userId = LoginInterceptor.getUserId(request);
+        log.info("获取订单统计, userId={}", userId);
+        OrderStatsResponse response = orderService.getOrderStats(userId);
+        return ApiResponse.success(response);
+    }
+
+    /**
+     * 获取已完成订单
+     */
+    @GetMapping("/completed")
+    public ApiResponse<OrderListResponse> getCompletedOrders(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            HttpServletRequest request) {
+        Long userId = LoginInterceptor.getUserId(request);
+        log.info("获取已完成订单, userId={}", userId);
+        OrderListResponse response = orderService.getCompletedOrders(userId, page, pageSize);
         return ApiResponse.success(response);
     }
 

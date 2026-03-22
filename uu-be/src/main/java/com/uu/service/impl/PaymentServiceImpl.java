@@ -3,6 +3,8 @@ package com.uu.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uu.constants.OrderConstants;
+import com.uu.constants.PaymentConstants;
 import com.uu.dto.request.PaymentCreateRequest;
 import com.uu.dto.response.PaymentResponse;
 import com.uu.entity.MockPayment;
@@ -23,12 +25,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 支付服务实现
+ * 支付服务实现类
+ * <p>
+ * 提供支付创建、回调处理、Mock支付等核心业务功能。
+ * 使用悲观锁（FOR UPDATE）防止支付回调竞态条件，确保支付幂等性。
+ * </p>
+ *
+ * @author UU Team
+ * @since 1.0.0
  */
 @Slf4j
 @Service
@@ -56,13 +64,17 @@ public class PaymentServiceImpl implements PaymentService {
 
         // 验证订单状态
         if (order.getStatus() != OrderStatusEnum.PENDING_PAYMENT) {
+            log.warn("创建支付失败，订单状态错误, userId={}, orderId={}, currentStatus={}", userId, order.getId(), order.getStatus());
             throw new BusinessException(ErrorCodeEnum.ORDER_STATUS_ERROR);
         }
 
         // 验证支付金额（单位：分转换为元）
         BigDecimal orderAmount = order.getAmount();
-        BigDecimal paymentAmount = new BigDecimal(request.getAmount()).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
+        BigDecimal paymentAmount = new BigDecimal(request.getAmount())
+                .divide(new BigDecimal(PaymentConstants.AMOUNT_DIVISOR), PaymentConstants.AMOUNT_SCALE, PaymentConstants.AMOUNT_ROUNDING_MODE);
         if (orderAmount.compareTo(paymentAmount) != 0) {
+            log.warn("创建支付失败，金额不匹配, userId={}, orderId={}, orderAmount={}, paymentAmount={}",
+                    userId, order.getId(), orderAmount, paymentAmount);
             throw new BusinessException(ErrorCodeEnum.PAYMENT_AMOUNT_MISMATCH);
         }
 
@@ -142,6 +154,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         // 只有待支付状态才允许Mock支付
         if (order.getStatus() != OrderStatusEnum.PENDING_PAYMENT) {
+            log.warn("Mock支付失败，订单状态错误, userId={}, orderId={}, currentStatus={}", userId, orderId, order.getStatus());
             throw new BusinessException(ErrorCodeEnum.ORDER_STATUS_ERROR);
         }
 
@@ -197,10 +210,12 @@ public class PaymentServiceImpl implements PaymentService {
     public Order validateOrder(Long userId, Long orderId) {
         Order order = orderMapper.selectById(orderId);
         if (order == null) {
+            log.warn("订单不存在, userId={}, orderId={}", userId, orderId);
             throw new BusinessException(ErrorCodeEnum.ORDER_NOT_FOUND);
         }
 
         if (!order.getUserId().equals(userId)) {
+            log.warn("用户无权访问订单, userId={}, orderId={}, orderUserId={}", userId, orderId, order.getUserId());
             throw new BusinessException(ErrorCodeEnum.FORBIDDEN);
         }
 
@@ -239,7 +254,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         // 模拟支付参数（实际应调用微信支付API获取）
         Map<String, Object> paymentParams = new HashMap<>();
-        paymentParams.put("timeStamp", System.currentTimeMillis() / 1000);
+        paymentParams.put("timeStamp", System.currentTimeMillis() / PaymentConstants.TIMESTAMP_DIVISOR);
         paymentParams.put("nonceStr", "nonce_" + System.currentTimeMillis());
         paymentParams.put("package", "prepay_id=" + payment.getId());
         paymentParams.put("signType", "MD5");

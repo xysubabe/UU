@@ -1,6 +1,7 @@
 package com.uu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.uu.dto.response.OrderLogListResponse;
 import com.uu.dto.response.OrderLogResponse;
 import com.uu.entity.OrderLog;
 import com.uu.mapper.OrderLogMapper;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 订单日志服务实现
@@ -43,6 +45,18 @@ public class OrderLogServiceImpl implements OrderLogService {
         List<OrderLog> logs = orderLogMapper.selectList(queryWrapper);
         log.info("获取订单日志, orderId={}, count={}", orderId, logs.size());
         return logs;
+    }
+
+    @Override
+    public OrderLogListResponse getOrderLogList(Long orderId) {
+        List<OrderLog> logs = getOrderLogs(orderId);
+        List<OrderLogResponse> responseList = logs.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+
+        OrderLogListResponse response = new OrderLogListResponse();
+        response.setList(responseList);
+        return response;
     }
 
     @Override

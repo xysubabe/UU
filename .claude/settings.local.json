@@ -27,7 +27,8 @@
       "Bash(cp \"/d/迅雷下载/gradle-8.7-all.zip\" \"C:/Users/98352/.gradle/wrapper/dists/gradle-8.7-all/aan3ydargesu18aqyqjwhr3pc/\")",
       "Bash(rm -rf \"C:/Users/98352/.gradle/wrapper/dists/gradle-8.7-all/aan3ydargesu18aqyqjwhr3pc\")",
       "Bash(mkdir -p \"C:/Users/98352/.gradle/wrapper/dists/gradle-8.7-all/aan3ydargesu18aqyqjwhr3pc\")",
-      "Bash(gradle build:*)"
+      "Bash(gradle build:*)",
+      "Bash(./gradlew test:*)"
     ]
   }
 }

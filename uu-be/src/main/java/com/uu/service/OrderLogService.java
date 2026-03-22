@@ -1,5 +1,6 @@
 package com.uu.service;
 
+import com.uu.dto.response.OrderLogListResponse;
 import com.uu.entity.OrderLog;
 
 import java.util.List;
@@ -24,6 +25,13 @@ public interface OrderLogService {
      * @return 日志列表
      */
     List<OrderLog> getOrderLogs(Long orderId);
+
+    /**
+     * 获取订单日志列表（响应格式）
+     * @param orderId 订单ID
+     * @return 日志列表响应
+     */
+    OrderLogListResponse getOrderLogList(Long orderId);
 
     /**
      * 转换为响应DTO

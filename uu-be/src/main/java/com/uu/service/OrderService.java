@@ -5,6 +5,7 @@ import com.uu.dto.request.OrderCreateRequest;
 import com.uu.dto.response.OrderDetailResponse;
 import com.uu.dto.response.OrderListResponse;
 import com.uu.dto.response.OrderResponse;
+import com.uu.dto.response.OrderStatsResponse;
 
 /**
  * 订单服务接口
@@ -37,6 +38,22 @@ public interface OrderService {
      * @return 订单列表
      */
     OrderListResponse getOngoingOrders(Long userId, Integer page, Integer pageSize);
+
+    /**
+     * 获取已完成订单
+     * @param userId 用户ID
+     * @param page 页码
+     * @param pageSize 每页数量
+     * @return 订单列表
+     */
+    OrderListResponse getCompletedOrders(Long userId, Integer page, Integer pageSize);
+
+    /**
+     * 获取订单统计
+     * @param userId 用户ID
+     * @return 订单统计
+     */
+    OrderStatsResponse getOrderStats(Long userId);
 
     /**
      * 获取订单详情

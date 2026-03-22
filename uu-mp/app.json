@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/order/create/create",
+    "pages/order/list/list",
+    "pages/order/detail/detail",
+    "pages/user/profile/profile",
+    "pages/user/setting/setting",
+    "pages/address/list/list",
+    "pages/address/edit/edit",
+    "pages/auth/login/login"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4A90E2",
+    "navigationBarTitleText": "UU跑腿",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4A90E2",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/images/tab/home.png",
+        "selectedIconPath": "assets/images/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/order/list/list",
+        "text": "订单",
+        "iconPath": "assets/images/tab/order.png",
+        "selectedIconPath": "assets/images/tab/order-active.png"
+      },
+      {
+        "pagePath": "pages/user/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/images/tab/user.png",
+        "selectedIconPath": "assets/images/tab/user-active.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于跑腿服务"
+    }
+  },
+  "requiredPrivateInfos": [
+    "chooseAddress"
+  ],
+  "lazyCodeLoading": "requiredComponents"
+}

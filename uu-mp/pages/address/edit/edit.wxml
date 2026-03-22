@@ -1,0 +1,45 @@
+<!-- pages/address/edit/edit.wxml -->
+<view class="container">
+  <view class="form">
+    <!-- 联系人姓名 -->
+    <view class="form-item">
+      <text class="label">联系人</text>
+      <input class="input" type="text" placeholder="请输入联系人姓名" value="{{contactName}}" bindinput="onContactNameInput" />
+    </view>
+
+    <!-- 联系电话 -->
+    <view class="form-item">
+      <text class="label">联系电话</text>
+      <input class="input" type="number" placeholder="请输入11位手机号码" value="{{contactPhone}}" bindinput="onContactPhoneInput" maxlength="11" />
+    </view>
+
+    <!-- 地区 -->
+    <view class="form-item">
+      <text class="label">所在地区</text>
+      <input class="input" type="text" placeholder="请输入省/市/区" value="{{region}}" bindinput="onRegionInput" />
+    </view>
+
+    <!-- 详细地址 -->
+    <view class="form-item">
+      <text class="label">详细地址</text>
+      <textarea class="textarea" placeholder="请输入详细地址（街道、门牌号等）" value="{{detailedAddress}}" bindinput="onDetailedAddressInput" maxlength="100"></textarea>
+    </view>
+
+    <!-- 设为默认地址 -->
+    <view class="form-item">
+      <view class="checkbox-container" bindtap="toggleDefault">
+        <view class="checkbox {{isDefault ? 'checked' : ''}}">
+          <text class="checkbox-icon" wx:if="{{isDefault}}">✓</text>
+        </view>
+        <text class="checkbox-label">设为默认地址</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="footer-actions">
+    <button class="btn btn-primary" bindtap="saveAddress" disabled="{{submitting}}">
+      {{ submitting ? '保存中...' : '保存地址' }}
+    </button>
+  </view>
+</view>
