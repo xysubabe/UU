@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,8 +83,10 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderStatusEnum.PENDING_PAYMENT);
         order.setDescription(request.getDescription());
         order.setTitle(generateTitle(request.getDescription()));
-        order.setAmount(new BigDecimal(request.getAmount()));
-        order.setDeliveryFee(new BigDecimal(request.getAmount()));
+        // 金额单位：分转换为元
+        BigDecimal amount = new BigDecimal(request.getAmount()).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
+        order.setAmount(amount);
+        order.setDeliveryFee(amount);
 
         // 设置地址信息
         if (addressId != null) {

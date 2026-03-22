@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,9 +59,9 @@ public class PaymentServiceImpl implements PaymentService {
             throw new BusinessException(ErrorCodeEnum.ORDER_STATUS_ERROR);
         }
 
-        // 验证支付金额
+        // 验证支付金额（单位：分转换为元）
         BigDecimal orderAmount = order.getAmount();
-        BigDecimal paymentAmount = new BigDecimal(request.getAmount());
+        BigDecimal paymentAmount = new BigDecimal(request.getAmount()).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
         if (orderAmount.compareTo(paymentAmount) != 0) {
             throw new BusinessException(ErrorCodeEnum.PAYMENT_AMOUNT_MISMATCH);
         }
@@ -81,14 +82,22 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void handleCallback(String transactionId, String orderCode, String amount) {
+        // 使用悲观锁防止竞态条件（多个回调同时处理同一订单）
         LambdaQueryWrapper<Payment> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Payment::getOrderCode, orderCode)
-                .eq(Payment::getStatus, PaymentStatusEnum.PENDING);
+                .eq(Payment::getStatus, PaymentStatusEnum.PENDING)
+                .last("FOR UPDATE");
 
         Payment payment = paymentMapper.selectOne(queryWrapper);
         if (payment == null) {
             log.warn("支付回调失败，未找到待支付记录, orderCode={}", orderCode);
             throw new BusinessException(ErrorCodeEnum.PAYMENT_CALLBACK_FAILED);
+        }
+
+        // 检查是否已经处理过（幂等性）
+        if (payment.getStatus() == PaymentStatusEnum.PAID) {
+            log.info("支付已处理，跳过重复回调, orderCode={}, transactionId={}", orderCode, transactionId);
+            return;
         }
 
         // 验证金额
@@ -120,8 +129,16 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PaymentResponse mockPay(Long userId, Long orderId) {
-        // 验证订单所有权和状态
-        Order order = validateOrder(userId, orderId);
+        // 获取订单
+        Order order = orderMapper.selectById(orderId);
+        if (order == null) {
+            throw new BusinessException(ErrorCodeEnum.ORDER_NOT_FOUND);
+        }
+
+        // DevOps 用户跳过所有权验证，普通用户需要验证
+        if (userId != 999999L && !order.getUserId().equals(userId)) {
+            throw new BusinessException(ErrorCodeEnum.FORBIDDEN);
+        }
 
         // 只有待支付状态才允许Mock支付
         if (order.getStatus() != OrderStatusEnum.PENDING_PAYMENT) {
@@ -157,6 +174,7 @@ public class PaymentServiceImpl implements PaymentService {
             mockResult.put("mock", true);
             mockResult.put("success", true);
             mockResult.put("message", "Mock支付成功");
+            mockResult.put("devOpsId", userId);
             mockPayment.setMockResult(objectMapper.writeValueAsString(mockResult));
         } catch (JsonProcessingException e) {
             log.error("Mock结果序列化失败", e);

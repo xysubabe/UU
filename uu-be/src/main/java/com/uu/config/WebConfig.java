@@ -34,7 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // DevOps认证拦截器
         registry.addInterceptor(devOpsAuthInterceptor)
-                .addPathPatterns("/devops/**");
+                .addPathPatterns("/devops/**", "/payment/mock-pay");
 
         // 登录校验拦截器
         registry.addInterceptor(loginInterceptor)

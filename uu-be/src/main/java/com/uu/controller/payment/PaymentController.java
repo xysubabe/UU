@@ -1,14 +1,19 @@
 package com.uu.controller.payment;
 
+import com.uu.annotation.DevOpsAuth;
 import com.uu.dto.request.PaymentCreateRequest;
 import com.uu.dto.response.ApiResponse;
 import com.uu.dto.response.PaymentResponse;
+import com.uu.interceptor.DevOpsAuthInterceptor;
 import com.uu.interceptor.LoginInterceptor;
 import com.uu.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/payment")
+@Validated
 public class PaymentController {
 
     @Autowired
@@ -41,9 +47,9 @@ public class PaymentController {
      */
     @PostMapping("/callback")
     public String handleCallback(
-            @RequestParam String transactionId,
-            @RequestParam String orderCode,
-            @RequestParam String amount) {
+            @RequestParam @NotBlank(message = "交易ID不能为空") String transactionId,
+            @RequestParam @NotBlank(message = "订单编号不能为空") String orderCode,
+            @RequestParam @NotBlank(message = "支付金额不能为空") String amount) {
         log.info("收到支付回调, orderCode={}, transactionId={}", orderCode, transactionId);
         paymentService.handleCallback(transactionId, orderCode, amount);
         return "SUCCESS";
@@ -53,12 +59,11 @@ public class PaymentController {
      * Mock支付（运维专用）
      */
     @PostMapping("/mock-pay")
+    @DevOpsAuth
     public ApiResponse<PaymentResponse> mockPay(
-            @RequestParam Long orderId,
-            HttpServletRequest request) {
-        Long userId = LoginInterceptor.getUserId(request);
-        log.info("Mock支付, userId={}, orderId={}", userId, orderId);
-        PaymentResponse response = paymentService.mockPay(userId, orderId);
+            @RequestParam @NotNull(message = "订单ID不能为空") Long orderId) {
+        log.info("Mock支付, orderId={}", orderId);
+        PaymentResponse response = paymentService.mockPay(DevOpsAuthInterceptor.getDevOpsId(), orderId);
         return ApiResponse.success(response);
     }
 }
