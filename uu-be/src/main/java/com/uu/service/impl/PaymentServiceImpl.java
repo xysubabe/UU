@@ -210,6 +210,12 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void processPaymentSuccess(Order order, Payment payment, String transactionId) {
+        // 检查订单状态，防止重复处理
+        if (order.getStatus() != OrderStatusEnum.PENDING_PAYMENT) {
+            log.warn("订单状态已变更，忽略支付回调, orderId={}, currentStatus={}", order.getId(), order.getStatus());
+            return;
+        }
+
         // 更新支付状态
         payment.setTransactionId(transactionId);
         payment.setStatus(PaymentStatusEnum.PAID);

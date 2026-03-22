@@ -64,6 +64,10 @@ public class OrderServiceImpl implements OrderService {
                 if (request.getStartAddressId() == null || request.getEndAddressId() == null) {
                     throw new BusinessException(ErrorCodeEnum.INVALID_PARAMS);
                 }
+                // 验证起点和终点不能相同
+                if (request.getStartAddressId().equals(request.getEndAddressId())) {
+                    throw new BusinessException(ErrorCodeEnum.INVALID_PARAMS);
+                }
                 addressId = request.getEndAddressId();
                 break;
             case HELP_QUEUE:
@@ -91,6 +95,9 @@ public class OrderServiceImpl implements OrderService {
         // 设置地址信息
         if (addressId != null) {
             Address address = addressService.getById(addressId);
+            if (address == null) {
+                throw new BusinessException(ErrorCodeEnum.ADDRESS_NOT_FOUND);
+            }
             String fullAddress = address.getProvince() + address.getCity() + address.getDistrict() + address.getDetailAddress();
 
             switch (serviceType) {
@@ -101,6 +108,9 @@ public class OrderServiceImpl implements OrderService {
                     break;
                 case HELP_SEND:
                     Address startAddress = addressService.getById(request.getStartAddressId());
+                    if (startAddress == null) {
+                        throw new BusinessException(ErrorCodeEnum.ADDRESS_NOT_FOUND);
+                    }
                     String startFullAddress = startAddress.getProvince() + startAddress.getCity() + startAddress.getDistrict() + startAddress.getDetailAddress();
                     order.setStartAddress(startFullAddress);
                     order.setEndAddress(fullAddress);
@@ -130,6 +140,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderListResponse getOrderList(Long userId, Integer status, Integer page, Integer pageSize) {
+        // 参数验证
+        if (page == null || page < 1) {
+            page = 1;
+        }
+        if (pageSize == null || pageSize < 1 || pageSize > 100) {
+            pageSize = 10;
+        }
+
         LambdaQueryWrapper<Order> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Order::getUserId, userId);
 
