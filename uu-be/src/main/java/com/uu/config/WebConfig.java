@@ -26,6 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
             "/auth/**",
             "/file/**",
             "/region/**",
+            "/payment/callback",
             "/error"
     );
 
